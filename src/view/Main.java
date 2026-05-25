@@ -8,15 +8,18 @@ import service.MapaService;
 
 import java.util.Scanner;
 
-
+/**
+ * Classe principal do sistema RotaAcessível.
+ * Apresenta o menu interativo e gerencia as entradas do usuário.
+ */
 public class Main {
 
     public static void main(String[] args) {
 
-   
+        // Scanner para leitura de entradas do usuário
         Scanner scanner = new Scanner(System.in);
 
-        
+        // Instâncias dos serviços e do usuário atual
         MapaService mapa = new MapaService();
         Usuario usuarioAtual = new Usuario(1, "Rinat", "rinat@email.com");
 
@@ -26,18 +29,18 @@ public class Main {
         System.out.println("   Usuario: " + usuarioAtual.getNome());
         System.out.println("============================================");
 
-        
+        // Pré-carga com dados de exemplo para demonstração
         mapa.adicionarPonto(new Degrau("Rua Augusta, 100", "Degrau alto na entrada da farmacia", 8, 25.5));
         mapa.adicionarPonto(new CalcadaIrregular("Av. Paulista, 1500", "Buracos na via de pedestres", 6, "Raizes de arvore quebrando o cimento"));
         mapa.adicionarPonto(new RampaInexistente("Rua Consolacao, 50", "Cruzamento sem guia rebaixada", 10, "Esquina com Rua Oscar Freire"));
         System.out.println("3 obstaculos de exemplo carregados.\n");
 
-       
+        // ==================== MENU PRINCIPAL ====================
         int opcao = -1;
         do {
             exibirMenu();
 
-         
+            // Validação de entrada do menu
             try {
                 opcao = Integer.parseInt(scanner.nextLine().trim());
             } catch (NumberFormatException e) {
@@ -45,25 +48,25 @@ public class Main {
                 continue;
             }
 
-        
+            // Switch-case para o menu principal
             switch (opcao) {
 
-                case 1: 
+                case 1: // ADICIONAR obstáculo
                     usuarioAtual.registrarObstaculo();
                     adicionarObstaculo(scanner, mapa);
                     break;
 
-                case 2: 
+                case 2: // LISTAR todos
                     mapa.listarAlertas();
                     break;
 
-                case 3: 
+                case 3: // BUSCAR por palavra-chave
                     System.out.print("Digite a palavra-chave para buscar: ");
                     String busca = scanner.nextLine().trim();
                     mapa.buscarObstaculo(busca);
                     break;
 
-                case 4: 
+                case 4: // ATUALIZAR nivel de perigo
                     System.out.println("Total de obstaculos: " + mapa.getTotalObstaculos());
                     System.out.print("Numero do obstaculo a atualizar: ");
                     int numAtualizar = lerInteiro(scanner);
@@ -72,18 +75,18 @@ public class Main {
                     mapa.atualizarNivelPerigo(numAtualizar, novoNivel);
                     break;
 
-                case 5: 
+                case 5: // REMOVER obstáculo
                     mapa.listarAlertas();
                     System.out.print("Numero do obstaculo a remover: ");
                     int numRemover = lerInteiro(scanner);
                     mapa.removerObstaculo(numRemover);
                     break;
 
-                case 6: 
+                case 6: // ESTATÍSTICAS
                     mapa.exibirEstatisticas();
                     break;
 
-                case 0: 
+                case 0: // SAIR
                     System.out.println("\nObrigado por usar o RotaAcessivel!");
                     System.out.println("Juntos tornamos a cidade mais inclusiva.");
                     break;
@@ -97,7 +100,11 @@ public class Main {
         scanner.close();
     }
 
-   
+    // ==================== Métodos auxiliares ====================
+
+    /**
+     * Exibe o menu de opções na tela.
+     */
     private static void exibirMenu() {
         System.out.println("\n========== MENU PRINCIPAL ==========");
         System.out.println("1. Adicionar obstaculo");
@@ -110,7 +117,10 @@ public class Main {
         System.out.print("Escolha uma opcao: ");
     }
 
-   
+    /**
+     * Guia o usuário para adicionar um novo obstáculo,
+     * com seleção do tipo e validação dos campos.
+     */
     private static void adicionarObstaculo(Scanner scanner, MapaService mapa) {
         System.out.println("\n--- TIPO DE OBSTACULO ---");
         System.out.println("1 - Degrau");
@@ -120,10 +130,11 @@ public class Main {
 
         int tipo = lerInteiro(scanner);
 
+        // Campos comuns a todos os tipos
         System.out.print("Localizacao (ex: Rua X, numero Y): ");
         String local = scanner.nextLine().trim();
 
-       
+        // Validação: local não pode estar vazio
         if (local.isEmpty()) {
             System.out.println("Erro: localizacao nao pode ser vazia. Operacao cancelada.");
             return;
@@ -135,18 +146,19 @@ public class Main {
         System.out.print("Nivel de perigo (1-10): ");
         int nivel = lerInteiro(scanner);
 
-
+        // Validação de nível antes de criar
         if (nivel < 1 || nivel > 10) {
             System.out.println("Nivel fora do intervalo. Usando valor 5.");
             nivel = 5;
         }
 
+        // Cria o objeto do tipo correto e adiciona ao mapa
         switch (tipo) {
             case 1:
                 System.out.print("Altura do degrau em cm (0 para nao saber): ");
                 double altura = lerDouble(scanner);
                 if (altura <= 0) {
-                    
+                    // Usa o construtor sobrecarregado sem altura
                     mapa.adicionarPonto(new Degrau(local, desc, nivel));
                 } else {
                     mapa.adicionarPonto(new Degrau(local, desc, nivel, altura));
@@ -157,7 +169,7 @@ public class Main {
                 System.out.print("Tipo de irregularidade (ex: buraco, raiz, piso solto): ");
                 String tipoIrreg = scanner.nextLine().trim();
                 if (tipoIrreg.isEmpty()) {
-                  
+                    // Usa o construtor sobrecarregado sem tipo
                     mapa.adicionarPonto(new CalcadaIrregular(local, desc, nivel));
                 } else {
                     mapa.adicionarPonto(new CalcadaIrregular(local, desc, nivel, tipoIrreg));
@@ -168,7 +180,7 @@ public class Main {
                 System.out.print("Ponto exato onde deveria ter rampa: ");
                 String pontoRampa = scanner.nextLine().trim();
                 if (pontoRampa.isEmpty()) {
-               
+                    // Usa o construtor sobrecarregado sem detalhe
                     mapa.adicionarPonto(new RampaInexistente(local, desc, nivel));
                 } else {
                     mapa.adicionarPonto(new RampaInexistente(local, desc, nivel, pontoRampa));
@@ -180,7 +192,9 @@ public class Main {
         }
     }
 
-    
+    /**
+     * Lê um inteiro do scanner com tratamento de exceção (validação).
+     */
     private static int lerInteiro(Scanner scanner) {
         try {
             return Integer.parseInt(scanner.nextLine().trim());
@@ -190,7 +204,9 @@ public class Main {
         }
     }
 
-  
+    /**
+     * Lê um double do scanner com tratamento de exceção (validação).
+     */
     private static double lerDouble(Scanner scanner) {
         try {
             return Double.parseDouble(scanner.nextLine().trim().replace(",", "."));
