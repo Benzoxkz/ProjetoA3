@@ -1,15 +1,28 @@
 package model;
 
+
 public class Usuario {
+
+    
     private int id;
     private String nome;
     private String email;
 
+  
     public Usuario(int id, String nome, String email) {
         this.id = id;
         this.nome = nome;
         this.email = email;
     }
+
+  
+    public Usuario(int id, String nome) {
+        this.id = id;
+        this.nome = nome;
+        this.email = "nao informado";
+    }
+
+
 
     public int getId() { return id; }
     public void setId(int id) { this.id = id; }
@@ -20,13 +33,13 @@ public class Usuario {
     public String getEmail() { return email; }
     public void setEmail(String email) { this.email = email; }
 
-    // Método solicitado no CP1
+    
     public void registrarObstaculo() {
-        System.out.println("Usuario " + this.nome + " esta iniciando um registro.");
+        System.out.println("Usuario " + this.nome + " esta iniciando um novo registro.");
     }
 
     @Override
     public String toString() {
-        return "Usuario [ID: " + id + ", Nome: " + nome + ", E-mail: " + email + "]";
+        return "[ID: " + id + " | Nome: " + nome + " | Email: " + email + "]";
     }
 }
