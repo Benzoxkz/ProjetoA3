@@ -1,34 +1,30 @@
 package model;
 
-/**
- * Representa uma calçada danificada ou irregular.
- * Herda de Obstaculo e adiciona o tipo de irregularidade encontrada.
- */
+// Representa calçadas com buracos, raízes, piso solto, etc.
+// Herda de Obstaculo e adiciona o campo tipoIrregularidade.
 public class CalcadaIrregular extends Obstaculo {
 
-    private String tipoIrregularidade; // ex: "buraco", "raiz", "piso solto"
+    private String tipoIrregularidade;
 
-    // Construtor completo
     public CalcadaIrregular(String localizacao, String descricao, int nivelDePerigo, String tipoIrregularidade) {
         super(localizacao, descricao, nivelDePerigo);
         this.tipoIrregularidade = tipoIrregularidade;
     }
 
-    // Construtor sobrecarregado (overload): tipo não informado
+    // Segundo construtor para quando o tipo não foi informado
     public CalcadaIrregular(String localizacao, String descricao, int nivelDePerigo) {
         super(localizacao, descricao, nivelDePerigo);
-        this.tipoIrregularidade = "Não especificado";
+        this.tipoIrregularidade = "nao informado";
     }
 
-    public String getTipoIrregularidade()         { return tipoIrregularidade; }
-    public void   setTipoIrregularidade(String v) { this.tipoIrregularidade = v; }
+    public String getTipoIrregularidade() { return tipoIrregularidade; }
+    public void setTipoIrregularidade(String tipoIrregularidade) { this.tipoIrregularidade = tipoIrregularidade; }
 
-    // Polimorfismo: sobrescreve exibirDetalhes() com informações da calçada
     @Override
     public void exibirDetalhes() {
-        System.out.println("=== CALÇADA IRREGULAR ===");
-        System.out.println(super.toString());
+        System.out.println(">>> CALCADA IRREGULAR");
+        System.out.println(toString());
         System.out.println("Tipo: " + tipoIrregularidade);
-        System.out.println("------------------------");
+        System.out.println("---");
     }
 }

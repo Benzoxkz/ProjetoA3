@@ -1,52 +1,43 @@
 package model;
 
-/**
- * Classe abstrata que representa um obstáculo urbano.
- * Todas as barreiras herdam dela — isso é herança (POO).
- */
+// Classe base para todos os obstáculos do mapa.
+// É abstrata porque não faz sentido criar um "obstáculo genérico" — 
+// sempre vai ser um degrau, calçada ou rampa.
 public abstract class Obstaculo {
 
-    // Atributos privados — encapsulamento
     private String localizacao;
     private String descricao;
-    private int nivelDePerigo; // de 1 (baixo) a 10 (crítico)
+    private int nivelDePerigo; // 1 = baixo risco, 10 = crítico
 
-    // Construtor: inicializa os atributos comuns a todos os obstáculos
     public Obstaculo(String localizacao, String descricao, int nivelDePerigo) {
         this.localizacao = localizacao;
-        this.descricao   = descricao;
+        this.descricao = descricao;
 
-        // Valida o nível: se vier fora do intervalo, lança exceção
         if (nivelDePerigo < 1 || nivelDePerigo > 10) {
-            throw new IllegalArgumentException("Nível de perigo deve ser entre 1 e 10.");
+            throw new IllegalArgumentException("Nivel de perigo tem que ser entre 1 e 10.");
         }
         this.nivelDePerigo = nivelDePerigo;
     }
 
-    // --- Getters e Setters ---
+    public String getLocalizacao() { return localizacao; }
+    public void setLocalizacao(String localizacao) { this.localizacao = localizacao; }
 
-    public String getLocalizacao()              { return localizacao; }
-    public void   setLocalizacao(String v)      { this.localizacao = v; }
+    public String getDescricao() { return descricao; }
+    public void setDescricao(String descricao) { this.descricao = descricao; }
 
-    public String getDescricao()                { return descricao; }
-    public void   setDescricao(String v)        { this.descricao = v; }
-
-    public int    getNivelDePerigo()            { return nivelDePerigo; }
-    public void   setNivelDePerigo(int v) {
-        if (v < 1 || v > 10) {
-            throw new IllegalArgumentException("Nível deve ser entre 1 e 10.");
+    public int getNivelDePerigo() { return nivelDePerigo; }
+    public void setNivelDePerigo(int nivelDePerigo) {
+        if (nivelDePerigo < 1 || nivelDePerigo > 10) {
+            throw new IllegalArgumentException("Nivel de perigo tem que ser entre 1 e 10.");
         }
-        this.nivelDePerigo = v;
+        this.nivelDePerigo = nivelDePerigo;
     }
 
-    // Método abstrato: cada subclasse mostra seus próprios detalhes (polimorfismo)
+    // Cada subclasse vai implementar esse método do seu jeito
     public abstract void exibirDetalhes();
 
-    // toString — usado no menu para mostrar um resumo do obstáculo
     @Override
     public String toString() {
-        return "Local: " + localizacao
-             + " | Descrição: " + descricao
-             + " | Perigo: " + nivelDePerigo + "/10";
+        return "Local: " + localizacao + " | Descricao: " + descricao + " | Perigo: " + nivelDePerigo + "/10";
     }
 }

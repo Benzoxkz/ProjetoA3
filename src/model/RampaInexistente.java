@@ -1,34 +1,30 @@
 package model;
 
-/**
- * Representa um local onde falta rampa de acessibilidade.
- * Herda de Obstaculo e registra o ponto exato onde a rampa deveria existir.
- */
+// Lugar onde deveria ter rampa mas não tem.
+// Herda de Obstaculo e guarda onde exatamente a rampa está faltando.
 public class RampaInexistente extends Obstaculo {
 
-    private String pontoFaltante; // descrição de onde exatamente falta a rampa
+    private String pontoFaltante;
 
-    // Construtor completo
     public RampaInexistente(String localizacao, String descricao, int nivelDePerigo, String pontoFaltante) {
         super(localizacao, descricao, nivelDePerigo);
         this.pontoFaltante = pontoFaltante;
     }
 
-    // Construtor sobrecarregado (overload): ponto não informado
+    // Segundo construtor para quando não se sabe o ponto exato
     public RampaInexistente(String localizacao, String descricao, int nivelDePerigo) {
         super(localizacao, descricao, nivelDePerigo);
-        this.pontoFaltante = "Ponto não especificado";
+        this.pontoFaltante = "nao especificado";
     }
 
-    public String getPontoFaltante()         { return pontoFaltante; }
-    public void   setPontoFaltante(String v) { this.pontoFaltante = v; }
+    public String getPontoFaltante() { return pontoFaltante; }
+    public void setPontoFaltante(String pontoFaltante) { this.pontoFaltante = pontoFaltante; }
 
-    // Polimorfismo: sobrescreve exibirDetalhes() com informações da rampa
     @Override
     public void exibirDetalhes() {
-        System.out.println("=== RAMPA INEXISTENTE ===");
-        System.out.println(super.toString());
+        System.out.println(">>> RAMPA INEXISTENTE");
+        System.out.println(toString());
         System.out.println("Onde deveria ter rampa: " + pontoFaltante);
-        System.out.println("------------------------");
+        System.out.println("---");
     }
 }

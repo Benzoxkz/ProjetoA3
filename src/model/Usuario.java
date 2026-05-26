@@ -1,41 +1,36 @@
 package model;
 
-/**
- * Representa um usuário que colabora registrando obstáculos no sistema.
- */
+// Representa quem está usando o sistema para registrar obstáculos.
 public class Usuario {
 
-    private int    id;
+    private int id;
     private String nome;
     private String email;
 
-    // Construtor completo
     public Usuario(int id, String nome, String email) {
-        this.id    = id;
-        this.nome  = nome;
+        this.id = id;
+        this.nome = nome;
         this.email = email;
     }
 
-    // Construtor sobrecarregado (overload): sem e-mail
+    // Segundo construtor para quando o email não é obrigatório
     public Usuario(int id, String nome) {
-        this.id    = id;
-        this.nome  = nome;
-        this.email = "não informado";
+        this.id = id;
+        this.nome = nome;
+        this.email = "nao informado";
     }
 
-    // --- Getters e Setters ---
+    public int getId() { return id; }
+    public void setId(int id) { this.id = id; }
 
-    public int    getId()               { return id; }
-    public void   setId(int v)          { this.id = v; }
+    public String getNome() { return nome; }
+    public void setNome(String nome) { this.nome = nome; }
 
-    public String getNome()             { return nome; }
-    public void   setNome(String v)     { this.nome = v; }
-
-    public String getEmail()            { return email; }
-    public void   setEmail(String v)    { this.email = v; }
+    public String getEmail() { return email; }
+    public void setEmail(String email) { this.email = email; }
 
     @Override
     public String toString() {
-        return "[ID: " + id + " | Nome: " + nome + " | Email: " + email + "]";
+        return "Usuario " + nome + " (ID: " + id + ", email: " + email + ")";
     }
 }

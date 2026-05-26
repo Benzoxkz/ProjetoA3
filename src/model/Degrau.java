@@ -1,34 +1,30 @@
 package model;
 
-/**
- * Representa um degrau em calçadas ou entradas de estabelecimentos.
- * Herda de Obstaculo e adiciona o atributo específico: altura do degrau.
- */
+// Degrau é um tipo de obstáculo que tem altura específica.
+// Herda os atributos básicos de Obstaculo (localizacao, descricao, nivelDePerigo).
 public class Degrau extends Obstaculo {
 
-    private double alturaCm; // altura do degrau em centímetros
+    private double alturaCm;
 
-    // Construtor completo
     public Degrau(String localizacao, String descricao, int nivelDePerigo, double alturaCm) {
-        super(localizacao, descricao, nivelDePerigo); // chama o construtor da classe pai
+        super(localizacao, descricao, nivelDePerigo);
         this.alturaCm = alturaCm;
     }
 
-    // Construtor sobrecarregado (overload): usa altura padrão quando não se sabe o valor
+    // Segundo construtor para quando a pessoa não sabe a altura exata
     public Degrau(String localizacao, String descricao, int nivelDePerigo) {
         super(localizacao, descricao, nivelDePerigo);
-        this.alturaCm = 5.0; // valor padrão de 5 cm
+        this.alturaCm = 5.0; // colocamos 5cm como padrão
     }
 
-    public double getAlturaCm()           { return alturaCm; }
-    public void   setAlturaCm(double v)   { this.alturaCm = v; }
+    public double getAlturaCm() { return alturaCm; }
+    public void setAlturaCm(double alturaCm) { this.alturaCm = alturaCm; }
 
-    // Polimorfismo: sobrescreve exibirDetalhes() com informações do degrau
     @Override
     public void exibirDetalhes() {
-        System.out.println("=== DEGRAU ===");
-        System.out.println(super.toString());
+        System.out.println(">>> DEGRAU");
+        System.out.println(toString());
         System.out.println("Altura: " + alturaCm + " cm");
-        System.out.println("--------------");
+        System.out.println("---");
     }
 }
