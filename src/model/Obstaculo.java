@@ -1,68 +1,52 @@
 package model;
 
 /**
- * Classe abstrata que representa um obstáculo urbano genérico.
- * Todas as barreiras arquitetônicas herdam desta classe (herança).
+ * Classe abstrata que representa um obstáculo urbano.
+ * Todas as barreiras herdam dela — isso é herança (POO).
  */
 public abstract class Obstaculo {
 
     // Atributos privados — encapsulamento
     private String localizacao;
     private String descricao;
-    private int nivelDePerigo; // Escala de 1 a 10
+    private int nivelDePerigo; // de 1 (baixo) a 10 (crítico)
 
-    /**
-     * Construtor principal com todos os atributos.
-     */
+    // Construtor: inicializa os atributos comuns a todos os obstáculos
     public Obstaculo(String localizacao, String descricao, int nivelDePerigo) {
         this.localizacao = localizacao;
-        this.descricao = descricao;
-        // Validação: nível de perigo deve estar entre 1 e 10
+        this.descricao   = descricao;
+
+        // Valida o nível: se vier fora do intervalo, lança exceção
         if (nivelDePerigo < 1 || nivelDePerigo > 10) {
-            System.out.println("Aviso: nivel de perigo deve ser entre 1 e 10. Valor ajustado para 1.");
-            this.nivelDePerigo = 1;
-        } else {
-            this.nivelDePerigo = nivelDePerigo;
+            throw new IllegalArgumentException("Nível de perigo deve ser entre 1 e 10.");
         }
+        this.nivelDePerigo = nivelDePerigo;
     }
 
-    // ---------- Getters e Setters ----------
+    // --- Getters e Setters ---
 
-    public String getLocalizacao() { return localizacao; }
-    public void setLocalizacao(String localizacao) { this.localizacao = localizacao; }
+    public String getLocalizacao()              { return localizacao; }
+    public void   setLocalizacao(String v)      { this.localizacao = v; }
 
-    public String getDescricao() { return descricao; }
-    public void setDescricao(String descricao) { this.descricao = descricao; }
+    public String getDescricao()                { return descricao; }
+    public void   setDescricao(String v)        { this.descricao = v; }
 
-    public int getNivelDePerigo() { return nivelDePerigo; }
-    public void setNivelDePerigo(int nivelDePerigo) {
-        if (nivelDePerigo < 1 || nivelDePerigo > 10) {
-            System.out.println("Nivel de perigo invalido. Mantendo valor anterior.");
-        } else {
-            this.nivelDePerigo = nivelDePerigo;
+    public int    getNivelDePerigo()            { return nivelDePerigo; }
+    public void   setNivelDePerigo(int v) {
+        if (v < 1 || v > 10) {
+            throw new IllegalArgumentException("Nível deve ser entre 1 e 10.");
         }
+        this.nivelDePerigo = v;
     }
 
-    // ---------- Métodos abstratos (polimorfismo) ----------
-
-    /**
-     * Exibe os detalhes específicos de cada tipo de obstáculo.
-     * Cada classe filha sobrescreve este método (override / polimorfismo).
-     */
+    // Método abstrato: cada subclasse mostra seus próprios detalhes (polimorfismo)
     public abstract void exibirDetalhes();
 
-    /**
-     * Valida a posição do obstáculo no mapa.
-     */
-    public abstract void validarPosicao();
-
-    /**
-     * Representação em texto do obstáculo.
-     */
+    // toString — usado no menu para mostrar um resumo do obstáculo
     @Override
     public String toString() {
-        return "Local: " + localizacao +
-               " | Descricao: " + descricao +
-               " | Perigo (1-10): " + nivelDePerigo;
+        return "Local: " + localizacao
+             + " | Descrição: " + descricao
+             + " | Perigo: " + nivelDePerigo + "/10";
     }
 }

@@ -1,55 +1,34 @@
 package model;
 
 /**
- * Representa um degrau ou obstáculo de altura em calçadas.
- * Herda de Obstaculo e adiciona o atributo específico alturaDegrau.
+ * Representa um degrau em calçadas ou entradas de estabelecimentos.
+ * Herda de Obstaculo e adiciona o atributo específico: altura do degrau.
  */
 public class Degrau extends Obstaculo {
 
-    private double alturaDegrau; // Altura em centímetros
+    private double alturaCm; // altura do degrau em centímetros
 
-    /**
-     * Construtor completo com todos os atributos.
-     */
-    public Degrau(String localizacao, String descricao, int nivelDePerigo, double alturaDegrau) {
-        super(localizacao, descricao, nivelDePerigo); // Chama o construtor da classe pai
-        this.alturaDegrau = alturaDegrau;
+    // Construtor completo
+    public Degrau(String localizacao, String descricao, int nivelDePerigo, double alturaCm) {
+        super(localizacao, descricao, nivelDePerigo); // chama o construtor da classe pai
+        this.alturaCm = alturaCm;
     }
 
-    /**
-     * Construtor sobrecarregado (overload) — cria degrau com altura padrão de 5.0 cm.
-     * Útil para registros rápidos quando a altura não é conhecida.
-     */
+    // Construtor sobrecarregado (overload): usa altura padrão quando não se sabe o valor
     public Degrau(String localizacao, String descricao, int nivelDePerigo) {
         super(localizacao, descricao, nivelDePerigo);
-        this.alturaDegrau = 5.0; // Valor padrão
+        this.alturaCm = 5.0; // valor padrão de 5 cm
     }
 
-    // ---------- Getter e Setter ----------
+    public double getAlturaCm()           { return alturaCm; }
+    public void   setAlturaCm(double v)   { this.alturaCm = v; }
 
-    public double getAlturaDegrau() { return alturaDegrau; }
-    public void setAlturaDegrau(double alturaDegrau) { this.alturaDegrau = alturaDegrau; }
-
-    /**
-     * Exibe detalhes específicos do degrau (sobrescrita / polimorfismo).
-     */
+    // Polimorfismo: sobrescreve exibirDetalhes() com informações do degrau
     @Override
     public void exibirDetalhes() {
-        System.out.println("=== ALERTA: DEGRAU ===");
+        System.out.println("=== DEGRAU ===");
         System.out.println(super.toString());
-        System.out.println("Altura do degrau: " + alturaDegrau + " cm");
-        System.out.println("----------------------");
-    }
-
-    /**
-     * Valida a posição do degrau (sobrescrita).
-     */
-    @Override
-    public void validarPosicao() {
-        if (getLocalizacao() == null || getLocalizacao().isEmpty()) {
-            System.out.println("Erro: Localizacao do degrau nao informada.");
-        } else {
-            System.out.println("Posicao validada: degrau em " + getLocalizacao());
-        }
+        System.out.println("Altura: " + alturaCm + " cm");
+        System.out.println("--------------");
     }
 }

@@ -9,90 +9,79 @@ import service.MapaService;
 import java.util.Scanner;
 
 /**
- * Classe principal do sistema RotaAcessível.
- * Apresenta o menu interativo e gerencia as entradas do usuário.
+ * Classe principal do RotaAcessível.
+ * Exibe o menu e lê as opções do usuário.
  */
 public class Main {
 
     public static void main(String[] args) {
 
-        // Scanner para leitura de entradas do usuário
         Scanner scanner = new Scanner(System.in);
-
-        // Instâncias dos serviços e do usuário atual
         MapaService mapa = new MapaService();
         Usuario usuarioAtual = new Usuario(1, "Rinat", "rinat@email.com");
 
-        System.out.println("============================================");
-        System.out.println("   Bem-vindo ao RotaAcessivel!");
-        System.out.println("   Sistema de Mapeamento de Obstaculos");
-        System.out.println("   Usuario: " + usuarioAtual.getNome());
-        System.out.println("============================================");
+        System.out.println("=========================================");
+        System.out.println("  Bem-vindo ao RotaAcessível!");
+        System.out.println("  Usuário: " + usuarioAtual.getNome());
+        System.out.println("=========================================");
 
-        // Pré-carga com dados de exemplo para demonstração
-        mapa.adicionarPonto(new Degrau("Rua Augusta, 100", "Degrau alto na entrada da farmacia", 8, 25.5));
-        mapa.adicionarPonto(new CalcadaIrregular("Av. Paulista, 1500", "Buracos na via de pedestres", 6, "Raizes de arvore quebrando o cimento"));
-        mapa.adicionarPonto(new RampaInexistente("Rua Consolacao, 50", "Cruzamento sem guia rebaixada", 10, "Esquina com Rua Oscar Freire"));
-        System.out.println("3 obstaculos de exemplo carregados.\n");
+        // Dados de exemplo pré-carregados para demonstração
+        mapa.adicionarPonto(new Degrau("Rua Augusta, 100", "Degrau na entrada da farmácia", 8, 25.5));
+        mapa.adicionarPonto(new CalcadaIrregular("Av. Paulista, 1500", "Buracos na calçada", 6, "Raízes de árvore"));
+        mapa.adicionarPonto(new RampaInexistente("Rua Consolação, 50", "Sem guia rebaixada", 10, "Esquina com R. Oscar Freire"));
+        System.out.println("3 obstáculos de exemplo carregados.\n");
 
-        // ==================== MENU PRINCIPAL ====================
         int opcao = -1;
         do {
             exibirMenu();
 
-            // Validação de entrada do menu
             try {
                 opcao = Integer.parseInt(scanner.nextLine().trim());
             } catch (NumberFormatException e) {
-                System.out.println("Entrada invalida! Digite um numero.");
+                System.out.println("Digite um número válido.");
                 continue;
             }
 
-            // Switch-case para o menu principal
             switch (opcao) {
 
-                case 1: // ADICIONAR obstáculo
-                    usuarioAtual.registrarObstaculo();
+                case 1:
                     adicionarObstaculo(scanner, mapa);
                     break;
 
-                case 2: // LISTAR todos
+                case 2:
                     mapa.listarAlertas();
                     break;
 
-                case 3: // BUSCAR por palavra-chave
-                    System.out.print("Digite a palavra-chave para buscar: ");
-                    String busca = scanner.nextLine().trim();
-                    mapa.buscarObstaculo(busca);
+                case 3:
+                    System.out.print("Palavra-chave para busca: ");
+                    mapa.buscarObstaculo(scanner.nextLine().trim());
                     break;
 
-                case 4: // ATUALIZAR nivel de perigo
-                    System.out.println("Total de obstaculos: " + mapa.getTotalObstaculos());
-                    System.out.print("Numero do obstaculo a atualizar: ");
+                case 4:
+                    System.out.println("Total de obstáculos: " + mapa.getTotalObstaculos());
+                    System.out.print("Número do obstáculo: ");
                     int numAtualizar = lerInteiro(scanner);
-                    System.out.print("Novo nivel de perigo (1-10): ");
+                    System.out.print("Novo nível de perigo (1-10): ");
                     int novoNivel = lerInteiro(scanner);
                     mapa.atualizarNivelPerigo(numAtualizar, novoNivel);
                     break;
 
-                case 5: // REMOVER obstáculo
+                case 5:
                     mapa.listarAlertas();
-                    System.out.print("Numero do obstaculo a remover: ");
-                    int numRemover = lerInteiro(scanner);
-                    mapa.removerObstaculo(numRemover);
+                    System.out.print("Número do obstáculo a remover: ");
+                    mapa.removerObstaculo(lerInteiro(scanner));
                     break;
 
-                case 6: // ESTATÍSTICAS
+                case 6:
                     mapa.exibirEstatisticas();
                     break;
 
-                case 0: // SAIR
-                    System.out.println("\nObrigado por usar o RotaAcessivel!");
-                    System.out.println("Juntos tornamos a cidade mais inclusiva.");
+                case 0:
+                    System.out.println("Obrigado por usar o RotaAcessível!");
                     break;
 
                 default:
-                    System.out.println("Opcao invalida! Escolha entre 0 e 6.");
+                    System.out.println("Opção inválida. Escolha entre 0 e 6.");
             }
 
         } while (opcao != 0);
@@ -100,118 +89,101 @@ public class Main {
         scanner.close();
     }
 
-    // ==================== Métodos auxiliares ====================
-
-    /**
-     * Exibe o menu de opções na tela.
-     */
+    // Exibe as opções do menu principal
     private static void exibirMenu() {
-        System.out.println("\n========== MENU PRINCIPAL ==========");
-        System.out.println("1. Adicionar obstaculo");
-        System.out.println("2. Listar todos os obstaculos");
-        System.out.println("3. Buscar obstaculo por local/descricao");
-        System.out.println("4. Atualizar nivel de perigo");
-        System.out.println("5. Remover obstaculo");
-        System.out.println("6. Ver estatisticas do mapa");
+        System.out.println("\n===== MENU =====");
+        System.out.println("1. Adicionar obstáculo");
+        System.out.println("2. Listar todos");
+        System.out.println("3. Buscar por palavra-chave");
+        System.out.println("4. Atualizar nível de perigo");
+        System.out.println("5. Remover obstáculo");
+        System.out.println("6. Estatísticas");
         System.out.println("0. Sair");
-        System.out.print("Escolha uma opcao: ");
+        System.out.print("Opção: ");
     }
 
-    /**
-     * Guia o usuário para adicionar um novo obstáculo,
-     * com seleção do tipo e validação dos campos.
-     */
+    // Guia o usuário para cadastrar um novo obstáculo
     private static void adicionarObstaculo(Scanner scanner, MapaService mapa) {
-        System.out.println("\n--- TIPO DE OBSTACULO ---");
+        System.out.println("\n--- Tipo de obstáculo ---");
         System.out.println("1 - Degrau");
-        System.out.println("2 - Calcada Irregular");
+        System.out.println("2 - Calçada Irregular");
         System.out.println("3 - Rampa Inexistente");
-        System.out.print("Escolha o tipo: ");
-
+        System.out.print("Tipo: ");
         int tipo = lerInteiro(scanner);
 
-        // Campos comuns a todos os tipos
-        System.out.print("Localizacao (ex: Rua X, numero Y): ");
+        System.out.print("Localização (ex: Rua X, número Y): ");
         String local = scanner.nextLine().trim();
-
-        // Validação: local não pode estar vazio
         if (local.isEmpty()) {
-            System.out.println("Erro: localizacao nao pode ser vazia. Operacao cancelada.");
+            System.out.println("Localização não pode ser vazia. Operação cancelada.");
             return;
         }
 
-        System.out.print("Descricao do problema: ");
+        System.out.print("Descrição do problema: ");
         String desc = scanner.nextLine().trim();
 
-        System.out.print("Nivel de perigo (1-10): ");
+        System.out.print("Nível de perigo (1-10): ");
         int nivel = lerInteiro(scanner);
-
-        // Validação de nível antes de criar
         if (nivel < 1 || nivel > 10) {
-            System.out.println("Nivel fora do intervalo. Usando valor 5.");
+            System.out.println("Nível inválido. Usando 5.");
             nivel = 5;
         }
 
-        // Cria o objeto do tipo correto e adiciona ao mapa
-        switch (tipo) {
-            case 1:
-                System.out.print("Altura do degrau em cm (0 para nao saber): ");
-                double altura = lerDouble(scanner);
-                if (altura <= 0) {
-                    // Usa o construtor sobrecarregado sem altura
-                    mapa.adicionarPonto(new Degrau(local, desc, nivel));
-                } else {
-                    mapa.adicionarPonto(new Degrau(local, desc, nivel, altura));
-                }
-                break;
+        try {
+            switch (tipo) {
+                case 1:
+                    System.out.print("Altura do degrau em cm (0 se não sabe): ");
+                    double altura = lerDouble(scanner);
+                    if (altura <= 0) {
+                        mapa.adicionarPonto(new Degrau(local, desc, nivel));
+                    } else {
+                        mapa.adicionarPonto(new Degrau(local, desc, nivel, altura));
+                    }
+                    break;
 
-            case 2:
-                System.out.print("Tipo de irregularidade (ex: buraco, raiz, piso solto): ");
-                String tipoIrreg = scanner.nextLine().trim();
-                if (tipoIrreg.isEmpty()) {
-                    // Usa o construtor sobrecarregado sem tipo
-                    mapa.adicionarPonto(new CalcadaIrregular(local, desc, nivel));
-                } else {
-                    mapa.adicionarPonto(new CalcadaIrregular(local, desc, nivel, tipoIrreg));
-                }
-                break;
+                case 2:
+                    System.out.print("Tipo de irregularidade (ex: buraco, raiz): ");
+                    String irreg = scanner.nextLine().trim();
+                    if (irreg.isEmpty()) {
+                        mapa.adicionarPonto(new CalcadaIrregular(local, desc, nivel));
+                    } else {
+                        mapa.adicionarPonto(new CalcadaIrregular(local, desc, nivel, irreg));
+                    }
+                    break;
 
-            case 3:
-                System.out.print("Ponto exato onde deveria ter rampa: ");
-                String pontoRampa = scanner.nextLine().trim();
-                if (pontoRampa.isEmpty()) {
-                    // Usa o construtor sobrecarregado sem detalhe
-                    mapa.adicionarPonto(new RampaInexistente(local, desc, nivel));
-                } else {
-                    mapa.adicionarPonto(new RampaInexistente(local, desc, nivel, pontoRampa));
-                }
-                break;
+                case 3:
+                    System.out.print("Ponto onde deveria ter rampa: ");
+                    String ponto = scanner.nextLine().trim();
+                    if (ponto.isEmpty()) {
+                        mapa.adicionarPonto(new RampaInexistente(local, desc, nivel));
+                    } else {
+                        mapa.adicionarPonto(new RampaInexistente(local, desc, nivel, ponto));
+                    }
+                    break;
 
-            default:
-                System.out.println("Tipo invalido. Operacao cancelada.");
+                default:
+                    System.out.println("Tipo inválido. Operação cancelada.");
+            }
+        } catch (IllegalArgumentException e) {
+            System.out.println("Erro ao cadastrar: " + e.getMessage());
         }
     }
 
-    /**
-     * Lê um inteiro do scanner com tratamento de exceção (validação).
-     */
+    // Lê um inteiro com tratamento de erro
     private static int lerInteiro(Scanner scanner) {
         try {
             return Integer.parseInt(scanner.nextLine().trim());
         } catch (NumberFormatException e) {
-            System.out.println("Entrada invalida. Usando valor 0.");
+            System.out.println("Entrada inválida. Usando 0.");
             return 0;
         }
     }
 
-    /**
-     * Lê um double do scanner com tratamento de exceção (validação).
-     */
+    // Lê um double com tratamento de erro (aceita vírgula ou ponto)
     private static double lerDouble(Scanner scanner) {
         try {
             return Double.parseDouble(scanner.nextLine().trim().replace(",", "."));
         } catch (NumberFormatException e) {
-            System.out.println("Entrada invalida. Usando valor 0.0.");
+            System.out.println("Entrada inválida. Usando 0.0.");
             return 0.0;
         }
     }
